@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web 模板選樣庫（100 套）</title>
+  <meta name="description" content="100 套單頁模板選樣庫。支援分類、搜尋、收藏、預覽、匯出已選。" />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1b33;
+      --card2:#0b162c;
+      --text:#e8eefc;
+      --muted:#a8b4d6;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius2:14px;
+      --accent:#7aa7ff;
+      --good:#4ade80;
+      --warn:#fbbf24;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang TC",
+                   "Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 12% -10%, rgba(122,167,255,.25), transparent 55%),
+        radial-gradient(900px 500px at 92% 0%, rgba(124,58,237,.22), transparent 50%),
+        radial-gradient(800px 500px at 50% 110%, rgba(34,197,94,.12), transparent 55%),
+        linear-gradient(180deg, #070b14 0%, #0b1220 40%, #070b14 100%);
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:22px 18px 60px}
+    .hero{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;inset:-1px;
+      background:
+        radial-gradient(900px 400px at 20% 10%, rgba(122,167,255,.25), transparent 55%),
+        radial-gradient(900px 400px at 80% 20%, rgba(236,72,153,.16), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-inner{position:relative;padding:22px 22px 18px}
+    .title{
+      display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap
+    }
+    h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin-top:8px;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:13px;
+      max-width:820px;
+    }
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .chip{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex;gap:8px;align-items:center;
+      backdrop-filter: blur(10px);
+    }
+    .chip b{color:var(--text);font-weight:700}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{
+      appearance:none;border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;border-radius:12px;
+      font-size:13px;cursor:pointer;
+      transition:.15s transform, .15s background, .15s border-color;
+      display:inline-flex;gap:8px;align-items:center;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.16)}
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(122,167,255,.22), rgba(122,167,255,.12));
+      border-color: rgba(122,167,255,.35);
+    }
+    .btn.ghost{background: rgba(255,255,255,.03)}
+    .btn.danger{
+      background: linear-gradient(180deg, rgba(239,68,68,.22), rgba(239,68,68,.10));
+      border-color: rgba(239,68,68,.35);
+    }
+
+    .bar{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr .6fr auto;
+      gap:10px;
+      align-items:center;
+    }
+    @media (max-width: 980px){
+      .bar{grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px){
+      .bar{grid-template-columns: 1fr; }
+    }
+    .field{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      border-radius: 14px;
+      padding:10px 12px;
+      display:flex;gap:10px;align-items:center;
+      backdrop-filter: blur(10px);
+    }
+    .field input, .field select{
+      width:100%;
+      border:0;
+      outline:0;
+      background: transparent;
+      color: var(--text);
+      font-size:13px;
+    }
+    .field input::placeholder{color: rgba(168,180,214,.70)}
+    .field small{color:var(--muted);white-space:nowrap}
+    .toggle{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;
+      padding:10px 12px;border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      backdrop-filter: blur(10px);
+    }
+    .switch{
+      width:44px;height:26px;border-radius:999px;
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      position:relative;cursor:pointer;flex:0 0 auto;
+    }
+    .switch::after{
+      content:"";
+      width:22px;height:22px;border-radius:50%;
+      background: rgba(255,255,255,.86);
+      position:absolute;top:1px;left:1px;
+      transition:.15s left, .15s background;
+    }
+    .switch.on{
+      background: rgba(122,167,255,.35);
+      border-color: rgba(122,167,255,.45);
+    }
+    .switch.on::after{left:20px; background: rgba(255,255,255,.92)}
+
+    .tabs{
+      margin-top:14px;
+      display:flex;gap:10px;
+      overflow:auto;
+      padding-bottom:6px;
+    }
+    .tab{
+      flex:0 0 auto;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size:12px;
+      cursor:pointer;
+      transition:.15s transform, .15s background, .15s border-color, .15s color;
+      user-select:none;
+    }
+    .tab:hover{transform: translateY(-1px); background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.16); color:var(--text)}
+    .tab.active{
+      background: linear-gradient(180deg, rgba(122,167,255,.22), rgba(122,167,255,.10));
+      border-color: rgba(122,167,255,.40);
+      color: var(--text);
+    }
+
+    .meta{
+      margin-top:10px;
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+      color: var(--muted);
+      font-size:12px;
+    }
+    .meta .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:7px 10px;
+    }
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 1100px){ .grid{grid-template-columns: repeat(3,1fr)} }
+    @media (max-width: 780px){ .grid{grid-template-columns: repeat(2,1fr)} }
+    @media (max-width: 480px){ .grid{grid-template-columns: 1fr} }
+
+    .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 14px 40px rgba(0,0,0,.28);
+      position:relative;
+      transition:.15s transform, .15s border-color, .15s background;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    }
+
+    .cover{
+      height:140px;
+      position:relative;
+      background: radial-gradient(180px 120px at 30% 20%, rgba(122,167,255,.35), transparent 60%),
+                  radial-gradient(180px 120px at 80% 10%, rgba(236,72,153,.20), transparent 60%),
+                  rgba(0,0,0,.18);
+      border-bottom:1px solid var(--line);
+    }
+    .cover img{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      transform: scale(1.02);
+      filter: saturate(1.05) contrast(1.03);
+    }
+    .cover::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.55) 100%);
+      pointer-events:none;
+    }
+    .badges{
+      position:absolute; left:12px; bottom:10px;
+      display:flex; gap:8px; flex-wrap:wrap;
+      z-index:2;
+    }
+    .badge{
+      font-size:11px;
+      padding:6px 9px;
+      border-radius:999px;
+      background: rgba(0,0,0,.42);
+      border:1px solid rgba(255,255,255,.18);
+      color: rgba(232,238,252,.92);
+      backdrop-filter: blur(10px);
+      max-width: 100%;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .badge.cat{
+      background: rgba(122,167,255,.22);
+      border-color: rgba(122,167,255,.40);
+    }
+    .badge.selected{
+      background: rgba(34,197,94,.18);
+      border-color: rgba(34,197,94,.35);
+    }
+
+    .card-body{padding:12px 12px 14px}
+    .name{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+    }
+    .slug{
+      font-weight:750;
+      font-size:14px;
+      letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 100%;
+    }
+    .path{
+      margin-top:6px;
+      font-size:12px;
+      color: rgba(168,180,214,.85);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .row{
+      margin-top:10px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .mini{
+      padding:8px 10px;
+      border-radius:12px;
+      font-size:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      cursor:pointer;
+      transition:.12s transform,.12s background,.12s border-color;
+      user-select:none;
+    }
+    .mini:hover{transform: translateY(-1px); background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.16)}
+    .mini.primary{
+      background: linear-gradient(180deg, rgba(122,167,255,.22), rgba(122,167,255,.10));
+      border-color: rgba(122,167,255,.35);
+    }
+    .mini.star{margin-left:auto}
+    .mini.star.on{
+      background: rgba(251,191,36,.12);
+      border-color: rgba(251,191,36,.35);
+    }
+
+    .footer{
+      margin-top:22px;
+      color: rgba(168,180,214,.78);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    /* modal */
+    .modal{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:999;
+    }
+    .modal.on{display:flex}
+    .modal-card{
+      width:min(1100px, 100%);
+      height:min(82vh, 820px);
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(180deg, rgba(15,27,51,.92), rgba(11,18,32,.92));
+      box-shadow: 0 30px 120px rgba(0,0,0,.6);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .modal-head{
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    }
+    .modal-title{
+      display:flex;flex-direction:column;gap:2px;min-width: 240px;
+    }
+    .modal-title b{font-size:14px}
+    .modal-title span{font-size:12px;color: rgba(168,180,214,.9)}
+    .modal-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .modal-body{
+      flex:1;
+      background: rgba(0,0,0,.20);
+      position:relative;
+    }
+    .modal-body iframe{
+      border:0;
+      width:100%;
+      height:100%;
+      background:#fff;
+    }
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:20px;
+      transform: translateX(-50%);
+      padding:10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.55);
+      color: rgba(232,238,252,.92);
+      font-size:12px;
+      display:none;
+      z-index:1000;
+      backdrop-filter: blur(10px);
+    }
+    .toast.on{display:block}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:11px;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: rgba(232,238,252,.92);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="title">
+          <div>
+            <h1>Web 模板選樣庫（100 套）</h1>
+            <div class="sub">
+              目的：快速讓客戶挑選風格後再開案。支援 <b>分類、搜尋、收藏、預覽</b> 與 <b>匯出已選</b>。
+              <br/>操作：點 <span class="kbd">Preview</span> 內嵌快速看；點 <span class="kbd">Open</span> 新分頁完整看；點 <span class="kbd">☆</span> 收藏；點卡片右上角可加入「已選」清單。
+            </div>
+            <div class="chips" id="chips"></div>
+          </div>
+          <div class="top-actions">
+            <button class="btn ghost" id="btnOnlyFav"><span>☆</span><span>只看收藏</span></button>
+            <button class="btn primary" id="btnExport"><span>匯出已選</span><span id="selCount"></span></button>
+            <button class="btn danger" id="btnClear"><span>清空</span><span>收藏/已選</span></button>
+          </div>
+        </div>
+
+        <div class="bar">
+          <div class="field">
+            <small>搜尋</small>
+            <input id="q" placeholder="例如：ecommerce / travel / saas / 醫療 …（可搜資料夾名或分類）" />
+          </div>
+
+          <div class="field">
+            <small>分類</small>
+            <select id="cat"></select>
+          </div>
+
+          <div class="field">
+            <small>排序</small>
+            <select id="sort">
+              <option value="az">名稱 A → Z</option>
+              <option value="za">名稱 Z → A</option>
+              <option value="cat">依分類（固定順序）</option>
+              <option value="fav">收藏優先</option>
+              <option value="sel">已選優先</option>
+            </select>
+          </div>
+
+          <div class="toggle">
+            <div>
+              <div style="font-size:12px;font-weight:700">只顯示有縮圖</div>
+              <div style="font-size:12px;color:var(--muted)">（建議開啟：更像作品集）</div>
+            </div>
+            <div class="switch on" id="onlyThumb"></div>
+          </div>
+        </div>
+
+        <div class="tabs" id="tabs"></div>
+
+        <div class="meta">
+          <div class="pill">總數：<b id="total">100</b></div>
+          <div class="pill">顯示：<b id="shown">0</b></div>
+          <div class="pill">已收藏：<b id="favN">0</b></div>
+          <div class="pill">已選：<b id="selN">0</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="footer">
+      <div>部署到 GitHub Pages：把本檔案命名為 <b>index.html</b> 放在根目錄，並確保 <b>pages/</b> 也在同層（內含 index.html 與 thumb.jpg）。</div>
+      <div>提示：若你未來新增模板，只要在資料夾新增 <b>index.html</b> 與 <b>thumb.jpg</b>，再把 slug 加到下方資料清單即可。</div>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="modal-title">
+          <b id="mTitle">Preview</b>
+          <span id="mPath">./pages/xxx/index.html</span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn ghost" id="mPrev">上一個</button>
+          <button class="btn ghost" id="mNext">下一個</button>
+          <button class="btn primary" id="mOpen">Open</button>
+          <button class="btn ghost" id="mCopy">Copy Link</button>
+          <button class="btn" id="mStar">☆ 收藏</button>
+          <button class="btn danger" id="mClose">關閉</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <iframe id="mFrame" title="preview"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/* ========= 資料：10 大類（各 10） ========= */
+const CATEGORIES = [
+  { id:"cat01", name:"SaaS / 工具（10）", slugs:["saas","micro-saas","productivity-tool","remote-work","developer-tool","analytics-dashboard","service-landing","job-board","freelancer","hyperlocal"] },
+  { id:"cat02", name:"電商 / 零售（10）", slugs:["ecommerce","ecommerce-luxury","marketplace","subscription-box","digital-products","luxury-premium","pet-tech","brewery-winery","florist","bakery-cafe"] },
+  { id:"cat03", name:"企業服務（10）", slugs:["fintech-crypto","financial-dashboard","banking-traditional","insurance","legal-services","consulting","marketing-agency","b2b-service","event-management","cleaning"] },
+  { id:"cat04", name:"科技 / 前沿（10）", slugs:["ai-chatbot","cybersecurity","quantum-computing","space-tech","biotech","blockchain-defi","nft-web3","drone-fleet","spatial-computing","robotics-automation"] },
+  { id:"cat05", name:"醫療健康 / 照護（10）", slugs:["healthcare-app","mental-health","medical-clinic","pharmacy","dental","veterinary","senior-care","childcare","fitness-gym","biohacking"] },
+  { id:"cat06", name:"教育 / 知識（10）", slugs:["educational-app","online-course","coding-bootcamp","language-learning","edutainment","micro-credentials","conference","knowledge-base","design-system","museum"] },
+  { id:"cat07", name:"創意 / 媒體（10）", slugs:["creative-agency","portfolio-personal","photography","generative-art","magazine-blog","news-media","podcast","video-streaming","music-streaming","theater"] },
+  { id:"cat08", name:"生活服務（10）", slugs:["restaurant-food","coffee-shop","beauty-spa","home-services","sports","wedding-event","agriculture","smart-home","sustainable-energy","coworking"] },
+  { id:"cat09", name:"出行 / 房產 / 交通（10）", slugs:["travel-tourism","hotel-hospitality","airline","real-estate","construction","architecture-interior","automotive","ev-charging","logistics-delivery","vr-ar-platform"] },
+  { id:"cat10", name:"社群 / 公共（10）", slugs:["creator-economy","social-media-app","dating-app","membership","gaming","government-public-service","non-profit","church","sustainability-esg","newsletter"] }
+];
+
+const SLUG_TO_CAT = (() => {
+  const m = new Map();
+  CATEGORIES.forEach((c, idx) => c.slugs.forEach(s => m.set(s, {catId:c.id, catName:c.name, catOrder:idx})));
+  return m;
+})();
+
+const ALL_SLUGS = CATEGORIES.flatMap(c => c.slugs);
+
+/* ========= 狀態 ========= */
+const LS_FAV = "tpl_favs_v1";
+const LS_SEL = "tpl_selected_v1";
+let favs = new Set(JSON.parse(localStorage.getItem(LS_FAV) || "[]"));
+let selected = new Set(JSON.parse(localStorage.getItem(LS_SEL) || "[]"));
+
+let state = {
+  q: "",
+  cat: "all",
+  sort: "cat",
+  onlyFav: false,
+  onlyThumb: true,
+  activeTab: "all"
+};
+
+const $ = (id) => document.getElementById(id);
+
+function save(){
+  localStorage.setItem(LS_FAV, JSON.stringify(Array.from(favs)));
+  localStorage.setItem(LS_SEL, JSON.stringify(Array.from(selected)));
+}
+
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(()=>t.classList.remove("on"), 1600);
+}
+
+/* ========= URL helpers ========= */
+function relIndex(slug){ return `./pages/${slug}/index.html`; }
+function relThumb(slug){ return `./pages/${slug}/thumb.jpg`; }
+
+function absUrl(rel){
+  // base = current directory (works on GitHub Pages and local file)
+  const base = location.href.replace(/[#?].*$/,"").replace(/\/[^\/]*$/,"/");
+  return new URL(rel, base).href;
+}
+
+async function copy(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("已複製連結");
+  }catch(e){
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    toast("已複製連結");
+  }
+}
+
+/* ========= UI init ========= */
+function init(){
+  // chips
+  const chips = $("chips");
+  chips.innerHTML = `
+    <div class="chip"><b>${ALL_SLUGS.length}</b> 套模板</div>
+    <div class="chip"><b>${CATEGORIES.length}</b> 大類（每類 10）</div>
+    <div class="chip"><b>Preview</b> 內嵌快速看</div>
+    <div class="chip"><b>Open</b> 新分頁完整看</div>
+    <div class="chip"><b>☆</b> 收藏與已選會記住</div>
+  `;
+
+  // category select
+  const cat = $("cat");
+  cat.innerHTML = `
+    <option value="all">全部分類</option>
+    ${CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join("")}
+  `;
+
+  // tabs
+  const tabs = $("tabs");
+  tabs.innerHTML = `
+    <div class="tab active" data-tab="all">全部</div>
+    ${CATEGORIES.map(c => `<div class="tab" data-tab="${c.id}">${c.name.replace("（10）","")}</div>`).join("")}
+  `;
+  tabs.addEventListener("click", (e)=>{
+    const el = e.target.closest(".tab");
+    if(!el) return;
+    const tab = el.dataset.tab;
+    state.activeTab = tab;
+    // tabs -> category select
+    if(tab === "all"){ state.cat="all"; }
+    else { state.cat=tab; }
+    $("cat").value = state.cat;
+
+    [...tabs.querySelectorAll(".tab")].forEach(t=>t.classList.toggle("active", t.dataset.tab===tab));
+    render();
+  });
+
+  $("q").addEventListener("input", (e)=>{ state.q = e.target.value.trim().toLowerCase(); render(); });
+  $("cat").addEventListener("change",(e)=>{
+    state.cat = e.target.value;
+    state.activeTab = state.cat === "all" ? "all" : state.cat;
+    [...$("tabs").querySelectorAll(".tab")].forEach(t=>t.classList.toggle("active", t.dataset.tab===state.activeTab));
+    render();
+  });
+  $("sort").addEventListener("change",(e)=>{ state.sort = e.target.value; render(); });
+
+  $("btnOnlyFav").addEventListener("click", ()=>{
+    state.onlyFav = !state.onlyFav;
+    $("btnOnlyFav").classList.toggle("primary", state.onlyFav);
+    render();
+  });
+
+  $("onlyThumb").addEventListener("click", ()=>{
+    state.onlyThumb = !state.onlyThumb;
+    $("onlyThumb").classList.toggle("on", state.onlyThumb);
+    render();
+  });
+
+  $("btnExport").addEventListener("click", exportSelected);
+  $("btnClear").addEventListener("click", clearAll);
+
+  updateCounts();
+  render();
+}
+
+function updateCounts(shown=0){
+  $("total").textContent = ALL_SLUGS.length;
+  $("shown").textContent = shown;
+  $("favN").textContent = favs.size;
+  $("selN").textContent = selected.size;
+  $("selCount").textContent = selected.size ? `（${selected.size}）` : "";
+}
+
+/* ========= 渲染 & 排序 ========= */
+function buildItems(){
+  return ALL_SLUGS.map(slug=>{
+    const cat = SLUG_TO_CAT.get(slug);
+    return {
+      slug,
+      catId: cat?.catId || "other",
+      catName: cat?.catName || "其他",
+      catOrder: cat?.catOrder ?? 999,
+      relIndex: relIndex(slug),
+      relThumb: relThumb(slug),
+      isFav: favs.has(slug),
+      isSel: selected.has(slug)
+    };
+  });
+}
+
+function match(item){
+  if(state.onlyFav && !item.isFav) return false;
+
+  if(state.cat !== "all" && item.catId !== state.cat) return false;
+
+  if(state.q){
+    const q = state.q;
+    const hay = (item.slug + " " + item.catName).toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function sortItems(items){
+  const byName = (a,b)=>a.slug.localeCompare(b.slug);
+  const byCat = (a,b)=> (a.catOrder - b.catOrder) || byName(a,b);
+
+  if(state.sort==="az") items.sort(byName);
+  else if(state.sort==="za") items.sort((a,b)=>byName(b,a));
+  else if(state.sort==="fav") items.sort((a,b)=> (b.isFav - a.isFav) || byCat(a,b));
+  else if(state.sort==="sel") items.sort((a,b)=> (b.isSel - a.isSel) || byCat(a,b));
+  else items.sort(byCat);
+
+  return items;
+}
+
+function render(){
+  let items = sortItems(buildItems().filter(match));
+  const grid = $("grid");
+  grid.innerHTML = "";
+
+  // 只顯示有縮圖：用 <img onerror> 可能會把“沒有縮圖”的卡片變空；這裡用簡單策略：仍渲染卡片，但圖片失敗會隱藏。
+  // 若你之後確定全都有 thumb.jpg，可以一直開著。
+  let shown = items.length;
+
+  items.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.slug = item.slug;
+
+    card.innerHTML = `
+      <div class="cover">
+        <img src="${item.relThumb}" alt="${item.slug} thumb"
+             loading="lazy"
+             onerror="this.dataset.err='1'; this.style.display='none';" />
+        <div class="badges">
+          <div class="badge cat">${escapeHtml(item.catName.replace("（10）",""))}</div>
+          ${item.isSel ? `<div class="badge selected">已選</div>` : ``}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="name">
+          <div class="slug" title="${item.slug}">${item.slug}</div>
+          <button class="mini" data-act="toggleSel" title="加入/移除已選">✓ 已選</button>
+        </div>
+        <div class="path" title="${item.relIndex}">${item.relIndex}</div>
+        <div class="row">
+          <button class="mini primary" data-act="preview">Preview</button>
+          <button class="mini" data-act="open">Open</button>
+          <button class="mini" data-act="copy">Copy Link</button>
+          <button class="mini star ${item.isFav ? "on":""}" data-act="star" title="收藏">☆</button>
+        </div>
+      </div>
+    `;
+
+    // 如果開啟「只顯示有縮圖」，圖片載入錯誤時隱藏整張卡
+    if(state.onlyThumb){
+      const img = card.querySelector("img");
+      img.addEventListener("error", ()=>{
+        card.remove();
+        shown--;
+        updateCounts(shown);
+      });
+    }
+
+    // 已選按鈕狀態
+    const selBtn = card.querySelector(`[data-act="toggleSel"]`);
+    if(item.isSel){
+      selBtn.style.background = "rgba(34,197,94,.14)";
+      selBtn.style.borderColor = "rgba(34,197,94,.35)";
+    }
+
+    // events
+    card.addEventListener("click", (e)=>{
+      const act = e.target?.dataset?.act;
+      if(!act) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if(act==="preview") openModal(item.slug);
+      if(act==="open") window.open(item.relIndex, "_blank", "noopener");
+      if(act==="copy") copy(absUrl(item.relIndex));
+      if(act==="star") toggleFav(item.slug);
+      if(act==="toggleSel") toggleSel(item.slug);
+    });
+
+    grid.appendChild(card);
+  });
+
+  updateCounts(shown);
+}
+
+/* ========= 收藏 / 已選 ========= */
+function toggleFav(slug){
+  if(favs.has(slug)) favs.delete(slug);
+  else favs.add(slug);
+  save();
+  render();
+}
+function toggleSel(slug){
+  if(selected.has(slug)) selected.delete(slug);
+  else selected.add(slug);
+  save();
+  render();
+}
+
+function clearAll(){
+  if(!confirm("確定清空：收藏與已選？（只清本機瀏覽器記錄，不會刪檔）")) return;
+  favs = new Set();
+  selected = new Set();
+  save();
+  render();
+  toast("已清空");
+}
+
+async function exportSelected(){
+  const list = Array.from(selected).sort((a,b)=>a.localeCompare(b));
+  if(!list.length){
+    toast("目前沒有已選");
+    return;
+  }
+  const lines = list.map(slug => `${slug}\t${absUrl(relIndex(slug))}`);
+  const text = `已選模板（${list.length}）\n` + lines.join("\n");
+  await copy(text);
+}
+
+/* ========= Preview Modal ========= */
+let modalList = [];   // current list in view
+let modalIndex = 0;
+
+function openModal(slug){
+  modalList = sortItems(buildItems().filter(match)); // modal follows current filters
+  modalIndex = Math.max(0, modalList.findIndex(x=>x.slug===slug));
+  if(modalIndex<0) modalIndex = 0;
+
+  $("modal").classList.add("on");
+  loadModal(modalIndex);
+}
+
+function loadModal(i){
+  const item = modalList[i];
+  if(!item) return;
+
+  $("mTitle").textContent = `Preview：${item.slug}`;
+  $("mPath").textContent = item.relIndex;
+
+  const iframe = $("mFrame");
+  iframe.src = item.relIndex;
+
+  const star = $("mStar");
+  const isFav = favs.has(item.slug);
+  star.textContent = isFav ? "★ 已收藏" : "☆ 收藏";
+  star.classList.toggle("primary", isFav);
+}
+
+function closeModal(){
+  $("modal").classList.remove("on");
+  $("mFrame").src = "about:blank";
+}
+
+$("modal").addEventListener("click",(e)=>{
+  if(e.target.id==="modal") closeModal();
+});
+$("mClose").addEventListener("click", closeModal);
+$("mPrev").addEventListener("click", ()=>{
+  modalIndex = (modalIndex - 1 + modalList.length) % modalList.length;
+  loadModal(modalIndex);
+});
+$("mNext").addEventListener("click", ()=>{
+  modalIndex = (modalIndex + 1) % modalList.length;
+  loadModal(modalIndex);
+});
+$("mOpen").addEventListener("click", ()=>{
+  const item = modalList[modalIndex];
+  if(item) window.open(item.relIndex, "_blank", "noopener");
+});
+$("mCopy").addEventListener("click", ()=>{
+  const item = modalList[modalIndex];
+  if(item) copy(absUrl(item.relIndex));
+});
+$("mStar").addEventListener("click", ()=>{
+  const item = modalList[modalIndex];
+  if(!item) return;
+  toggleFav(item.slug);
+  // modal button state refresh
+  const isFav = favs.has(item.slug);
+  const star = $("mStar");
+  star.textContent = isFav ? "★ 已收藏" : "☆ 收藏";
+  star.classList.toggle("primary", isFav);
+});
+
+// keyboard
+window.addEventListener("keydown",(e)=>{
+  if(!$("modal").classList.contains("on")) return;
+  if(e.key==="Escape") closeModal();
+  if(e.key==="ArrowLeft") $("mPrev").click();
+  if(e.key==="ArrowRight") $("mNext").click();
+});
+
+function escapeHtml(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+init();
+</script>
+</body>
+</html>
