@@ -454,6 +454,24 @@
   width: 44px;
   justify-content: center;
 }
+/* ===== Fix: 右上角「✓ 已選」在深色/藍紫背景看不到字 ===== */
+
+/* 你若有用 data-act="toggleSel"，這條會 100% 命中 */
+[data-act="toggleSel"]{
+  color: rgba(255,255,255,.96) !important;
+  background: rgba(0,0,0,.38) !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* 若你用的是 on/active 表示已選狀態，加一點綠色提示 */
+[data-act="toggleSel"].on,
+[data-act="toggleSel"].active{
+  background: rgba(34,197,94,.22) !important;
+  border-color: rgba(34,197,94,.45) !important;
+}
 
   </style>
 </head>
@@ -946,4 +964,5 @@ init();
 </script>
 </body>
 </html>
+
 
