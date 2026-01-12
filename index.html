@@ -391,6 +391,70 @@
       background: rgba(255,255,255,.06);
       color: rgba(232,238,252,.92);
     }
+    /* ====== Auto theme (跟著系統深色/淺色) 的按鈕可讀性修正 ====== */
+:root{
+  /* Dark mode defaults */
+  --btn-bg: rgba(255,255,255,.10);
+  --btn-bg-hover: rgba(255,255,255,.16);
+  --btn-border: rgba(255,255,255,.22);
+  --btn-border-hover: rgba(255,255,255,.32);
+  --btn-text: rgba(232,238,252,.96);
+
+  --btn-primary-bg1: rgba(122,167,255,.34);
+  --btn-primary-bg2: rgba(122,167,255,.16);
+  --btn-primary-border: rgba(122,167,255,.55);
+  --btn-primary-text: rgba(255,255,255,.98);
+
+  --btn-shadow-text: 0 1px 2px rgba(0,0,0,.45);
+}
+
+/* Light mode overrides：系統切到淺色時自動套用 */
+@media (prefers-color-scheme: light){
+  :root{
+    --btn-bg: rgba(15,23,42,.06);
+    --btn-bg-hover: rgba(15,23,42,.10);
+    --btn-border: rgba(15,23,42,.18);
+    --btn-border-hover: rgba(15,23,42,.26);
+    --btn-text: rgba(15,23,42,.92);
+
+    --btn-primary-bg1: rgba(59,130,246,.20);
+    --btn-primary-bg2: rgba(59,130,246,.10);
+    --btn-primary-border: rgba(59,130,246,.38);
+    --btn-primary-text: rgba(15,23,42,.95);
+
+    --btn-shadow-text: none;
+  }
+  
+}
+
+/* 針對卡片下方的按鈕列：Preview / Open / Copy Link / ☆ */
+.card .row .mini{
+  color: var(--btn-text) !important;
+  background: var(--btn-bg) !important;
+  border-color: var(--btn-border) !important;
+  font-weight: 650;
+  text-shadow: var(--btn-shadow-text);
+  opacity: 1 !important;         /* 防止看起來像 disabled */
+  filter: none !important;       /* 防止被灰階化 */
+}
+
+.card .row .mini:hover{
+  background: var(--btn-bg-hover) !important;
+  border-color: var(--btn-border-hover) !important;
+}
+
+.card .row .mini.primary{
+  color: var(--btn-primary-text) !important;
+  background: linear-gradient(180deg, var(--btn-primary-bg1), var(--btn-primary-bg2)) !important;
+  border-color: var(--btn-primary-border) !important;
+}
+
+/* ☆ 收藏按鈕置中更像 UI 元件 */
+.card .row .mini.star{
+  width: 44px;
+  justify-content: center;
+}
+
   </style>
 </head>
 <body>
@@ -882,3 +946,4 @@ init();
 </script>
 </body>
 </html>
+
