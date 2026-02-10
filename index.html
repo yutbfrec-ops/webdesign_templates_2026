@@ -222,15 +222,15 @@
       background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(249,246,243,.78));
       border-radius: var(--radius);
       overflow:hidden;
-      box-shadow: 0 8px 18px rgba(74,54,40,.08), 0 20px 44px rgba(74,54,40,.10);
+      box-shadow: 0 8px 18px rgba(74,54,40,.08), 0 18px 38px rgba(74,54,40,.10);
       position:relative;
-      transition:.15s transform, .15s border-color, .15s background, .15s box-shadow;
+      transition: transform 300ms ease-out, box-shadow 300ms ease-out, border-color 300ms ease-out, background 300ms ease-out;
     }
     .card:hover{
-      transform: translateY(-2px);
+      transform: translateY(-8px);
       border-color: rgba(111,78,55,.40);
       background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(249,246,243,.78));
-      box-shadow: 0 12px 24px rgba(74,54,40,.10), 0 26px 56px rgba(74,54,40,.14);
+      box-shadow: 0 16px 28px rgba(74,54,40,.12), 0 28px 56px rgba(74,54,40,.16);
     }
 
     .cover{
